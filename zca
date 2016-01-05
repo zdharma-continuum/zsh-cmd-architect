@@ -1,0 +1,216 @@
+# Uses h-list
+
+emulate -L zsh
+
+setopt extendedglob
+zmodload zsh/curses
+zmodload zsh/parameter
+
+trap "_zca_exit" EXIT
+
+local IFS="
+"
+
+local one_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+local one_HLIST_CURRENT_IDX
+local one_HLIST_IS_SEARCH_MODE
+local one_HLIST_SEARCH_BUFFER
+local one_HLIST_TEXT_OFFSET
+local one_HLIST_IS_UNIQ_MODE
+local one_HLIST_CURRENT_SEGMENT
+
+local two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+local two_HLIST_CURRENT_IDX
+local two_HLIST_IS_SEARCH_MODE
+local two_HLIST_SEARCH_BUFFER
+local two_HLIST_TEXT_OFFSET
+local two_HLIST_IS_UNIQ_MODE
+local two_HLIST_CURRENT_SEGMENT
+
+# Cleanup before any exit
+_zca_exit() {
+    setopt localoptions
+    setopt extendedglob
+
+    zcurses 2>/dev/null delwin main
+    zcurses 2>/dev/null delwin status
+    zcurses 2>/dev/null refresh
+    zcurses end
+
+    _hlist_alternate_screen 0
+    _hlist_cursor_visibility 1
+}
+
+_zca_init_windows() {
+    zcurses init
+    zcurses delwin cmd 2>/dev/null
+    zcurses delwin main 2>/dev/null
+    zcurses delwin status 2>/dev/null
+    zcurses addwin cmd 4 "$term_width" 0 0
+    zcurses addwin main $(( term_height - 7 )) "$term_width" 4 0
+    zcurses addwin status "3" "$term_width" $(( term_height - 3 )) 0
+}
+
+_zca_switch_lists_states() {
+    # First argument is current list, i.e. $active_window
+    # This implies that we are switching from 1-$active_window
+   
+    if [ "$1" = "0" ]; then
+        # Switched to 1st list, save 2nd list's state
+        two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+        two_HLIST_CURRENT_IDX=$HLIST_CURRENT_IDX
+        two_HLIST_IS_SEARCH_MODE=$HLIST_IS_SEARCH_MODE
+        two_HLIST_SEARCH_BUFFER=$HLIST_SEARCH_BUFFER
+        two_HLIST_TEXT_OFFSET=$HLIST_TEXT_OFFSET
+        two_HLIST_IS_UNIQ_MODE=$HLIST_IS_UNIQ_MODE
+        two_HLIST_CURRENT_SEGMENT=$HLIST_CURRENT_SEGMENT
+
+        # ..and restore 1st list's state
+        HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$one_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+        HLIST_CURRENT_IDX=$one_HLIST_CURRENT_IDX
+        HLIST_IS_SEARCH_MODE=$one_HLIST_IS_SEARCH_MODE
+        HLIST_SEARCH_BUFFER=$one_HLIST_SEARCH_BUFFER
+        HLIST_TEXT_OFFSET=$one_HLIST_TEXT_OFFSET
+        HLIST_IS_UNIQ_MODE=$one_HLIST_IS_UNIQ_MODE
+        HLIST_CURRENT_SEGMENT=$one_HLIST_CURRENT_SEGMENT
+    else
+        # Switched to 2st list, save 1st list's state
+        one_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+        one_HLIST_CURRENT_IDX=$HLIST_CURRENT_IDX
+        one_HLIST_IS_SEARCH_MODE=$HLIST_IS_SEARCH_MODE
+        one_HLIST_SEARCH_BUFFER=$HLIST_SEARCH_BUFFER
+        one_HLIST_TEXT_OFFSET=$HLIST_TEXT_OFFSET
+        one_HLIST_IS_UNIQ_MODE=$HLIST_IS_UNIQ_MODE
+        one_HLIST_CURRENT_SEGMENT=$HLIST_CURRENT_SEGMENT
+
+        # ..and restore 2nd list's state
+        HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
+        HLIST_CURRENT_IDX=$two_HLIST_CURRENT_IDX
+        HLIST_IS_SEARCH_MODE=$two_HLIST_IS_SEARCH_MODE
+        HLIST_SEARCH_BUFFER=$two_HLIST_SEARCH_BUFFER
+        HLIST_TEXT_OFFSET=$two_HLIST_TEXT_OFFSET
+        HLIST_IS_UNIQ_MODE=$two_HLIST_IS_UNIQ_MODE
+        HLIST_CURRENT_SEGMENT=$two_HLIST_CURRENT_SEGMENT
+    fi
+}
+
+unset HLIST_COLORING_PATTERN
+
+[ -f ~/.config/zca/h-list.conf ] && . ~/.config/zca/h-list.conf
+[ -f ~/.config/zca/zca.conf ] && . ~/.config/zca/zca.conf
+
+typeset -a list1 list2
+local answer active_window=0
+
+# $cmd can be empty if not run from Zle
+list1=( "$BUFFER" "[Accept] [Abort]" )
+list2=( "$history[@]" )
+
+integer term_height="$LINES"
+integer term_width="$COLUMNS"
+if [[ "$term_height" -lt 1 || "$term_width" -lt 1 ]]; then
+    local stty_out=$( stty size )
+    term_height="${stty_out% *}"
+    term_width="${stty_out#* }"
+fi
+
+_zca_init_windows
+
+# First draw two vanilla (no remembering of state) n-lists, saving their default state
+HLIST_DRAW_ONLY=1
+HLIST_REMEMBER_STATE=0
+
+h-list "cmd" "4" $term_width "" "0" "0" "${list1[@]}"
+# Save default state of list 1
+_zca_switch_lists_states 1
+h-list "main" $(( term_height-6 )) $term_width "status" "3" "$term_width" "${list2[@]}"
+# Save default state of list 2
+_zca_switch_lists_states 0
+
+HLIST_DRAW_ONLY=0
+HLIST_REMEMBER_STATE=1 # From now on lists remember their state
+
+# Now go into loop of input handling of either of the two lists
+while (( 1 )); do
+
+    if [ "$active_window" = "0" ]; then
+        h-list "cmd" "4" $term_width "" "0" "0" "${list1[@]}"
+    else
+        h-list "main" $(( term_height-6 )) $term_width "status" "3" "$term_width" "${list2[@]}"
+    fi
+
+    if [ "$REPLY" = "LEAVE" ]; then
+        (( active_window = 1 - active_window ))
+        _zca_switch_lists_states "$active_window"
+    elif [ "$REPLY" -gt 0 ]; then
+        answer="$reply[REPLY]"
+        integer count=0
+        integer nseg="${#${(z)answer}}"
+        [[ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]] && HLIST_CURRENT_SEGMENT="$nseg"
+
+        # Get the interesting part - the selected segment
+        for i in "${(z)answer}"; do
+            count=count+1
+            if [ "$count" = "$HLIST_CURRENT_SEGMENT" ]; then
+                answer="$i"
+                break
+            fi
+        done
+
+        #
+        # Here we have the selected segment
+        # From now on the main logic operates and it
+        # can end in final acceptance of command
+        #
+
+        if [ "$answer" = "[Accept]" ]; then
+            # ZLE?
+            if [ "${(t)CURSOR}" = "integer-local-special" ]; then
+                zle redisplay
+                zle kill-whole-line
+                zle -U "$list1[1]"
+                break
+            else
+                print -zr "$list1[1]"
+                break
+            fi
+        elif [ "$answer" = "[Abort]" ]; then
+            # QUIT (1/2)
+            [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
+            break
+        else
+            #
+            # Here is where editing logic operates
+            #
+
+            if [ "$active_window" = "0" ]; then
+                # Delete of segment - iteration that skips active segment
+                count=0
+                local new_cmd=""
+                for i in "${(z)list1[1]}"; do
+                    count=count+1
+                    if [ "$count" != "$HLIST_CURRENT_SEGMENT" ]; then
+                        new_cmd+="$i "
+                    fi
+                done
+                list1[1]="${new_cmd% }"
+            elif [ "$active_window" = "1" ]; then
+                # Addition of segment
+                list1[1]="$list1[1] $answer"
+
+                # Refresh the other window
+                _zca_switch_lists_states 0
+                HLIST_DRAW_ONLY=1
+                h-list "cmd" "4" $term_width "" "0" "0" "${list1[@]}"
+                HLIST_DRAW_ONLY=0
+                _zca_switch_lists_states 1
+            fi
+        fi
+    else
+        # QUIT (2/2)
+        [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
+        break
+    fi
+
+done
+# vim: set filetype=zsh:
