@@ -21,11 +21,12 @@ integer from_what_idx_list_is_shown="$2"
 integer page_height="$3"
 integer page_width="$4"
 integer last_element="$5"
-integer hscroll="$6"
-local key="$7"
-integer search="$8"
-local buffer="$9"
-integer uniq_mode="$10"
+integer nseg="$6"
+integer hscroll="$7"
+local key="$8"
+integer search="$9"
+local buffer="$10"
+integer uniq_mode="$11"
 
 #
 # Listening for input
@@ -125,10 +126,16 @@ case "$key" in
         hscroll+=7
         ;;
     (LEFT|'h')
-        (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT - 1 ))
+        if [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]; then
+            (( HLIST_CURRENT_SEGMENT = nseg - 1 ))
+            [ "$HLIST_CURRENT_SEGMENT" -le 0 ] && HLIST_CURRENT_SEGMENT=1
+        else
+            (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT - 1 ))
+        fi
         ;;
     (RIGHT|'l')
         (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT + 1 ))
+        [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ] && HLIST_CURRENT_SEGMENT="$nseg"
         ;;
     ($'\E')
         buffer=""
@@ -192,10 +199,16 @@ case "$key" in
         _hlist_compute_first_to_show_idx
         ;;
     (LEFT)
-        (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT - 1 ))
+        if [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]; then
+            (( HLIST_CURRENT_SEGMENT = nseg - 1 ))
+            [ "$HLIST_CURRENT_SEGMENT" -le 0 ] && HLIST_CURRENT_SEGMENT=1
+        else
+            (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT - 1 ))
+        fi
         ;;
     (RIGHT)
         (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT + 1 ))
+        [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ] && HLIST_CURRENT_SEGMENT="$nseg"
         ;;
     (F1|F2|F3|F4|F5|F6|F7|F8|F9|F10)
         # ignore

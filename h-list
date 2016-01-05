@@ -120,7 +120,6 @@ _hlist_mark_current_segment_in_current_element() {
         integer HLIST_CURRENT_PAGE_IDX=$(( (HLIST_CURRENT_IDX-1)%page_height+1 ))
         local element="$list[HLIST_CURRENT_IDX]"
         local output=""
-        integer nseg="${#${(z)element}}"
 
         [[ "$HLIST_CURRENT_SEGMENT" -lt 1 ]] && HLIST_CURRENT_SEGMENT=1
         integer active_segment="$HLIST_CURRENT_SEGMENT"
@@ -179,6 +178,7 @@ local prev_search_buffer=""
 integer prev_uniq_mode=0
 integer prev_start_idx=-1
 local MBEGIN MEND MATCH mbegin mend match
+integer nseg
 
 # Ability to remember the list between calls
 if [[ -z "$HLIST_REMEMBER_STATE" || "$HLIST_REMEMBER_STATE" -eq 0 || "$HLIST_REMEMBER_STATE" -eq 2 ]]; then
@@ -246,6 +246,8 @@ done
 last_element="$#list"
 
 while (( 1 )); do
+    nseg="${#${(z)list[HLIST_CURRENT_IDX]}}"
+
     # Do searching (filtering with string)
     if [ -n "$HLIST_SEARCH_BUFFER" ]; then
         # Compute new list?
@@ -431,7 +433,7 @@ while (( 1 )); do
     fi
 
     h-list-input "$HLIST_CURRENT_IDX" "$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN" \
-                    "$page_height" "$page_width" "$last_element" "$HLIST_TEXT_OFFSET" \
+                    "$page_height" "$page_width" "$last_element" "$nseg" "$HLIST_TEXT_OFFSET" \
                     "$final_key" "$HLIST_IS_SEARCH_MODE" "$HLIST_SEARCH_BUFFER" \
                     "$HLIST_IS_UNIQ_MODE"
 
