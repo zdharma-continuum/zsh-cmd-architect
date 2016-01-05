@@ -108,6 +108,7 @@ integer end_idx=max_idx
 integer y=y_offset
 
 zcurses attr "$win" $bold white/black
+zcurses clear "$win"
 
 integer i text_len
 local text
