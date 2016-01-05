@@ -246,7 +246,9 @@ done
 last_element="$#list"
 
 while (( 1 )); do
-    nseg="${#${(z)list[HLIST_CURRENT_IDX]}}"
+    typeset -a tmp
+    tmp=( "${(z)list[HLIST_CURRENT_IDX]}" )
+    nseg="$#tmp"
 
     # Do searching (filtering with string)
     if [ -n "$HLIST_SEARCH_BUFFER" ]; then
