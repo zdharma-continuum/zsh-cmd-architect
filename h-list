@@ -310,7 +310,7 @@ while (( 1 )); do
             disp_list=( "${(@)list[HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN, end_idx]}" )
 
             if [ -n "$colsearch_pattern" ]; then
-                local col=$'\x1b[00;33m' reset=$'\x1b[00;00m'
+                local col=$'\x1b[00;35m' reset=$'\x1b[00;00m'
                 # The repeat will make the matching work on a fresh heap
                 repeat 1; do
                     disp_list=( "${(@)disp_list//(#mi)($~colsearch_pattern)/$col${MATCH}$reset}" )
