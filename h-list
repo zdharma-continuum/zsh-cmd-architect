@@ -248,10 +248,6 @@ done
 last_element="$#list"
 
 while (( 1 )); do
-    typeset -a tmp
-    tmp=( "${(z)list[HLIST_CURRENT_IDX]}" )
-    nseg="$#tmp"
-
     # Do searching (filtering with string)
     if [ -n "$HLIST_SEARCH_BUFFER" ]; then
         # Compute new list?
@@ -301,6 +297,9 @@ while (( 1 )); do
         fi
 
         _hlist_setup_user_vars 1
+        typeset -a tmp
+        tmp=( "${(z)list[HLIST_CURRENT_IDX]}" )
+        nseg="$#tmp"
 
         integer end_idx=$(( HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN + page_height - 1 ))
         [ "$end_idx" -gt "$last_element" ] && end_idx=last_element
@@ -366,6 +365,9 @@ while (( 1 )); do
 
         # "1" - shouldn't bother with non-selectables
         _hlist_setup_user_vars "$HLIST_IS_UNIQ_MODE"
+        typeset -a tmp
+        tmp=( "${(z)list[HLIST_CURRENT_IDX]}" )
+        nseg="$#tmp"
 
         integer end_idx=$(( HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN + page_height - 1 ))
         [ "$end_idx" -gt "$last_element" ] && end_idx=last_element
