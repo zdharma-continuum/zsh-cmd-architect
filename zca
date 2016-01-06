@@ -116,7 +116,7 @@ fi
 
 _zca_init_windows
 
-# First draw two vanilla (no remembering of state) n-lists, saving their default state
+# First draw two vanilla (no remembering of state) h-lists, saving their default state
 HLIST_DRAW_ONLY=1
 HLIST_REMEMBER_STATE=0
 
