@@ -27,6 +27,7 @@ local key="$8"
 integer search="$9"
 local buffer="$10"
 integer uniq_mode="$11"
+integer disable_search="$12"
 
 #
 # Listening for input
@@ -87,8 +88,10 @@ case "$key" in
         reply=( -1 QUIT )
         ;;
     (/)
-        search=1
-        _hlist_cursor_visibility 1
+        if [ "$disable_search" = "0" ]; then
+            search=1
+            _hlist_cursor_visibility 1
+        fi
         ;;
     ($'\t')
         reply=( $current_idx LEAVE )

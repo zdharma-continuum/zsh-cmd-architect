@@ -140,6 +140,7 @@ while (( 1 )); do
         HLIST_DRAW_ONLY=0
         _zca_switch_lists_states "0"
 
+        HLIST_DISABLE_SEARCH=1
         h-list "cmd" "4" $term_width "" "0" "0" " Command: " "1" "${list1[@]}"
     else
         _zca_switch_lists_states "0"
@@ -148,6 +149,7 @@ while (( 1 )); do
         HLIST_DRAW_ONLY=0
         _zca_switch_lists_states "1"
 
+        HLIST_DISABLE_SEARCH=0
         h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" " History: " "1" "${list2[@]}"
     fi
 

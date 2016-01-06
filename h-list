@@ -441,7 +441,7 @@ while (( 1 )); do
     h-list-input "$HLIST_CURRENT_IDX" "$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN" \
                     "$page_height" "$page_width" "$last_element" "$nseg" "$HLIST_TEXT_OFFSET" \
                     "$final_key" "$HLIST_IS_SEARCH_MODE" "$HLIST_SEARCH_BUFFER" \
-                    "$HLIST_IS_UNIQ_MODE"
+                    "$HLIST_IS_UNIQ_MODE" "$HLIST_DISABLE_SEARCH"
 
     selection="$reply[1]"
     action="$reply[2]"
