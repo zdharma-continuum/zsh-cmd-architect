@@ -196,19 +196,7 @@ while (( 1 )); do
         [[ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]] && HLIST_CURRENT_SEGMENT="$nseg"
 
         # Get the interesting part - the selected segment
-        for i in "${(z)answer}"; do
-            count=count+1
-            if [ "$count" = "$HLIST_CURRENT_SEGMENT" ]; then
-                answer="$i"
-                break
-            fi
-        done
-
-        #
-        # Here we have the selected segment
-        # From now on the main logic operates and it
-        # can end in final acceptance of command
-        #
+        answer="$tmp[$HLIST_CURRENT_SEGMENT]"
 
         if [ "$answer" = "[Accept]" ]; then
             # ZLE?
