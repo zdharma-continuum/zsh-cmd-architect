@@ -4,7 +4,7 @@ emulate -L zsh
 
 setopt extendedglob
 
-local _zca_has_terminfo=0
+_zca_has_terminfo=0
 
 zmodload zsh/curses
 zmodload zsh/parameter
@@ -42,14 +42,15 @@ _zca_exit() {
 
     zcurses end
     _zca_alternate_screen 0
+    unset _zca_has_terminfo
 
     _hlist_cursor_visibility "plain" 1
 }
 
 _zca_init_windows() {
-    zcurses init
     _zca_alternate_screen 1
 
+    zcurses init
     zcurses delwin cmd 2>/dev/null
     zcurses delwin main 2>/dev/null
     zcurses delwin status 2>/dev/null
