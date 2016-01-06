@@ -187,7 +187,38 @@ while (( 1 )); do
     if [ "$REPLY" = "LEAVE" ]; then
         (( active_window = 1 - active_window ))
         _zca_switch_lists_states "$active_window"
-    elif [ "$REPLY" -gt 0 ]; then
+    elif [[ ("$REPLY" = "MOVE_LEFT" || $REPLY = "MOVE_RIGHT") && "$active_window" = 0 ]]; then
+        #
+        # Shift + cursor key - move existing element
+        #
+        local cmd="$reply[1]"
+        typeset -a tmp
+        tmp=( "${(z)cmd}" )
+        integer nseg="$#tmp"
+        [[ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]] && HLIST_CURRENT_SEGMENT="$nseg"
+
+        if [ "$REPLY" = "MOVE_LEFT" ]; then
+            if [ "$HLIST_CURRENT_SEGMENT" -gt "1" ]; then
+                local dest="$tmp[HLIST_CURRENT_SEGMENT-1]"
+                tmp[HLIST_CURRENT_SEGMENT-1]="$tmp[HLIST_CURRENT_SEGMENT]";
+                tmp[HLIST_CURRENT_SEGMENT]="$dest"
+                list1[1]="${(j: :)tmp}"
+                (( HLIST_CURRENT_SEGMENT -- ))
+            fi
+        elif [ "$REPLY" = "MOVE_RIGHT" ]; then
+            if [ "$HLIST_CURRENT_SEGMENT" -lt "$nseg" ]; then
+                local dest="$tmp[HLIST_CURRENT_SEGMENT+1]"
+                tmp[HLIST_CURRENT_SEGMENT+1]="$tmp[HLIST_CURRENT_SEGMENT]";
+                tmp[HLIST_CURRENT_SEGMENT]="$dest"
+                list1[1]="${(j: :)tmp}"
+                (( HLIST_CURRENT_SEGMENT ++ ))
+            fi
+        fi
+    elif [[ "$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0 ]]; then
+        #
+        # Selection - add or remove element (or Accept or Quit)
+        #
+
         answer="$reply[REPLY]"
         typeset -a tmp
         tmp=( "${(z)answer}" )
@@ -214,7 +245,7 @@ while (( 1 )); do
             break
         else
             #
-            # Here is where editing logic operates
+            # Here is where add or remove logic operates
             #
 
             if [ "$active_window" = "0" ]; then
@@ -226,7 +257,7 @@ while (( 1 )); do
                 list1[1]="$list1[1] $answer"
             fi
         fi
-    else
+    elif [[ "$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -lt 0 ]]; then
         # QUIT (2/2)
         [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
         break

@@ -140,6 +140,12 @@ case "$key" in
         (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT + 1 ))
         [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ] && HLIST_CURRENT_SEGMENT="$nseg"
         ;;
+    (SLEFT|'H')
+        reply=( "$HLIST_CURRENT_SEGMENT" MOVE_LEFT )
+        ;;
+    (SRIGHT|'L')
+        reply=( "$HLIST_CURRENT_SEGMENT" MOVE_RIGHT )
+        ;;
     ($'\E')
         buffer=""
         ;;
