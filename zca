@@ -215,13 +215,6 @@ while (( 1 )); do
             elif [ "$active_window" = "1" ]; then
                 # Addition of segment
                 list1[1]="$list1[1] $answer"
-
-                # Refresh the other window
-                _zca_switch_lists_states 0
-                HLIST_DRAW_ONLY=1
-                h-list "cmd" "4" $term_width "" "0" "0" "${list1[@]}"
-                HLIST_DRAW_ONLY=0
-                _zca_switch_lists_states 1
             fi
         fi
     else
