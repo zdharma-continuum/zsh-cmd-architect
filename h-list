@@ -165,7 +165,7 @@ integer status_width="$6"
 integer page_height=main_height-2
 integer page_width=main_width-2
 local header="$7"
-local draw_border="$8"
+local mark_header="$8"
 
 shift 8
 
@@ -417,9 +417,11 @@ while (( 1 )); do
         zcurses move "$wname_status" 1 $(( status_msg_strlen + 2 ))
     }
 
-    [ "$draw_border" = "1" ] && zcurses border "$wname_main"
+    zcurses border "$wname_main"
     zcurses move "$wname_main" 0 2
+    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold magenta/black
     zcurses string "$wname_main" "$header"
+    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold white/black
     zcurses refresh "$wname_main"
 
     # Draw only?
