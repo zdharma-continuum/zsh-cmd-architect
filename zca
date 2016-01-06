@@ -132,7 +132,9 @@ typeset -a list1 list2
 local answer active_window=0
 
 # $cmd can be empty if not run from Zle
-list1=( "$BUFFER" "[Accept] [Abort]" )
+local buf="${BUFFER%% #}"
+buf="${buf## #}"
+list1=( "$buf" "[Accept] [Abort]" )
 list2=( "$history[@]" )
 
 integer term_height="$LINES"
