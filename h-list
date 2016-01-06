@@ -448,7 +448,7 @@ while (( 1 )); do
         final_key="$keypad"
     else
         _hlist_status_msg "Inproper input detected"
-        zcurses refresh main inner
+        zcurses refresh "main" "status"
     fi
 
     h-list-input "$HLIST_CURRENT_IDX" "$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN" \
