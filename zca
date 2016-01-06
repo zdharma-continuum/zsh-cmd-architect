@@ -38,7 +38,7 @@ _zca_exit() {
     zcurses end
 
     _hlist_alternate_screen 0
-    _hlist_cursor_visibility 1
+    _hlist_cursor_visibility "plain" 1
 }
 
 _zca_init_windows() {

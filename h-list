@@ -35,15 +35,24 @@ _hlist_status_msg() {
     status_msg_strlen=$#1
 }
 
+# $1 is window name, $2 is the expected cursor state (0 invisible, 1 visible)
 # Prefer tput, then module terminfo
 _hlist_cursor_visibility() {
+    # If $1 = plain, then just output the
+    # codes without any state management
+    if [ "$1" != "plain" ]; then
+        # Don't change already set cursor state
+        [ "$cursor_state[$1]" = "$2" ] && return
+        cursor_state[$1]="$2"
+    fi
+
     if type tput 2>/dev/null 1>&2; then
-        [ "$1" = "1" ] && { tput cvvis; tput cnorm }
-        [ "$1" = "0" ] && tput civis
+        [ "$2" = "1" ] && { tput cvvis; tput cnorm }
+        [ "$2" = "0" ] && tput civis
     elif [ "$_hlist_has_terminfo" = "1" ]; then
-        [ "$1" = "1" ] && { [ -n $terminfo[cvvis] ] && echo -n $terminfo[cvvis];
+        [ "$2" = "1" ] && { [ -n $terminfo[cvvis] ] && echo -n $terminfo[cvvis];
                            [ -n $terminfo[cnorm] ] && echo -n $terminfo[cnorm] }
-        [ "$1" = "0" ] && [ -n $terminfo[civis] ] && echo -n $terminfo[civis]
+        [ "$2" = "0" ] && [ -n $terminfo[civis] ] && echo -n $terminfo[civis]
     fi 
 }
 
@@ -181,6 +190,8 @@ integer prev_uniq_mode=0
 integer prev_start_idx=-1
 local MBEGIN MEND MATCH mbegin mend match
 integer nseg
+typeset -A "cursor_state"
+cursor_state=( "main" 1 "status" 1 )
 
 # Ability to remember the list between calls
 if [[ -z "$HLIST_REMEMBER_STATE" || "$HLIST_REMEMBER_STATE" -eq 0 || "$HLIST_REMEMBER_STATE" -eq 2 ]]; then
@@ -222,10 +233,6 @@ _hlist_alternate_screen 1
 zcurses bg "$wname_main" white/black
 # Status window is optional (1/3)
 [ -n "$wname_status" ] && zcurses bg "$wname_status" white/black
-
-if [ "$HLIST_IS_SEARCH_MODE" -ne 1 ]; then
-    _hlist_cursor_visibility 0
-fi
 
 #
 # Listening for input
@@ -396,6 +403,14 @@ while (( 1 )); do
             "$disp_list2[@]"
     fi
 
+    zcurses border "$wname_main"
+    zcurses move "$wname_main" 0 2
+    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold magenta/black
+    zcurses string "$wname_main" "$header"
+    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold white/black
+    _hlist_cursor_visibility "main" "0"
+    zcurses refresh "$wname_main"
+
     # Status window is optional (2/3)
     [ -n "$wname_status" ] && {
         local status_msg_strlen
@@ -414,17 +429,11 @@ while (( 1 )); do
         fi
 
         zcurses border "$wname_status"
-        zcurses refresh "$wname_status" 
         # status_msg_strlen is set in _hlist_status_msg()
         zcurses move "$wname_status" 1 $(( status_msg_strlen + 2 ))
+        [ "$HLIST_IS_SEARCH_MODE" -ne 1 ] && _hlist_cursor_visibility "status" "0" || _hlist_cursor_visibility "status" "1"
+        zcurses refresh "$wname_status" 
     }
-
-    zcurses border "$wname_main"
-    zcurses move "$wname_main" 0 2
-    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold magenta/black
-    zcurses string "$wname_main" "$header"
-    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold white/black
-    zcurses refresh "$wname_main"
 
     # Draw only?
     [ "$HLIST_DRAW_ONLY" = "1" ] && return
