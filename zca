@@ -254,7 +254,7 @@ while (( 1 )); do
                 list1[1]="${(j: :)tmp}"
             elif [ "$active_window" = "1" ]; then
                 # Addition of segment
-                list1[1]="$list1[1] $answer"
+                [ -z "$list1[1]" ] && list1[1]="$answer" || list1[1]="$list1[1] $answer"
             fi
         fi
     elif [[ "$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -lt 0 ]]; then
