@@ -223,10 +223,11 @@ while (( 1 )); do
         typeset -a tmp
         tmp=( "${(z)answer}" )
         integer nseg="$#tmp"
-        [[ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]] && HLIST_CURRENT_SEGMENT="$nseg"
+        integer cur_seg="$HLIST_CURRENT_SEGMENT"
+        [[ "$cur_seg" -gt "$nseg" ]] && cur_seg="$nseg"
 
         # Get the interesting part - the selected segment
-        answer="$tmp[$HLIST_CURRENT_SEGMENT]"
+        answer="$tmp[$cur_seg]"
 
         if [ "$answer" = "[Accept]" ]; then
             # ZLE?
@@ -250,7 +251,7 @@ while (( 1 )); do
 
             if [ "$active_window" = "0" ]; then
                 # Delete of segment
-                tmp[HLIST_CURRENT_SEGMENT]=()
+                tmp[cur_seg]=()
                 list1[1]="${(j: :)tmp}"
             elif [ "$active_window" = "1" ]; then
                 # Addition of segment
