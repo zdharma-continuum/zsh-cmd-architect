@@ -189,7 +189,6 @@ while (( 1 )); do
         _zca_switch_lists_states "$active_window"
     elif [ "$REPLY" -gt 0 ]; then
         answer="$reply[REPLY]"
-        integer count=0
         typeset -a tmp
         tmp=( "${(z)answer}" )
         integer nseg="$#tmp"
