@@ -51,6 +51,7 @@ if ! grep zsh-cmd-architect ~/.zshrc >/dev/null 2>&1; then
     echo "fpath=( \"\$fpath[@]\" \"\$HOME/.config/zca/zsh-cmd-architect\" )" >> ~/.zshrc
     echo "autoload h-list zca zca-usetty-wrapper zca-widget" >> ~/.zshrc
     echo "zle -N zca-widget" >> ~/.zshrc
+    echo "bindkey '^T' zca-widget" >> ~/.zshrc
     echo "### END ###" >> ~/.zshrc
     echo ">>> Done"
 else
