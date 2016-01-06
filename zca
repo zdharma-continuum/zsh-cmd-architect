@@ -45,6 +45,7 @@ _zca_exit() {
     unset _zca_has_terminfo
 
     _hlist_cursor_visibility "plain" 1
+    unset _hlist_has_terminfo
 }
 
 _zca_init_windows() {
