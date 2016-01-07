@@ -134,7 +134,7 @@ local answer active_window=1
 # $cmd can be empty if not run from Zle
 local buf="${BUFFER%% #}"
 buf="${buf## #}"
-list1=( "$buf" "[Accept] [Reject]" )
+list1=( "$buf" "[F1-Accept] [F2-Reject]" )
 list2=( "$history[@]" )
 
 integer term_height="$LINES"
@@ -217,7 +217,19 @@ while (( 1 )); do
                 (( HLIST_CURRENT_SEGMENT ++ ))
             fi
         fi
-    elif [[ "$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0 ]]; then
+    elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = "F1" || "$REPLY" = "F2" ]]; then
+        if [ "$REPLY" = "F1" ]; then
+            # Simulate F1-Accept selection
+            reply=( "" "[F1-Accept] [F2-Reject]" )
+            REPLY="2"
+            HLIST_CURRENT_SEGMENT="1"
+        elif [ "$REPLY" = "F2" ]; then
+            # Simulate F2-Reject selection
+            reply=( "" "[F1-Accept] [F2-Reject]" )
+            REPLY="2"
+            HLIST_CURRENT_SEGMENT="2"
+        fi
+
         #
         # Selection - add or remove element (or Accept or Quit)
         #
@@ -232,7 +244,7 @@ while (( 1 )); do
         # Get the interesting part - the selected segment
         answer="$tmp[$cur_seg]"
 
-        if [ "$answer" = "[Accept]" ]; then
+        if [ "$answer" = "[F1-Accept]" ]; then
             # ZLE?
             if [ "${(t)CURSOR}" = "integer-local-special" ]; then
                 zle redisplay
@@ -243,7 +255,7 @@ while (( 1 )); do
                 print -zr "$list1[1]"
                 break
             fi
-        elif [ "$answer" = "[Reject]" ]; then
+        elif [ "$answer" = "[F2-Reject]" ]; then
             # QUIT (1/2)
             [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
             break
