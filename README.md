@@ -2,11 +2,8 @@
 
 Also check out [Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)!
 
-Installation, moving segments:
-![zca](http://imageshack.com/a/img911/4901/y33DVh.gif)
-
-Horizontal scroll:
-![zca](http://imageshack.com/a/img907/584/VDRStY.gif)
+Zsh Command Architect in action:
+![zca](http://imageshack.com/a/img907/6173/osCBYT.gif)
 
 ## Installation
 
