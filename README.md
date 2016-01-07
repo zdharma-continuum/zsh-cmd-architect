@@ -1,3 +1,5 @@
+![zca logo](http://imageshack.com/a/img633/9128/Zrie5k.png)
+
 # Zsh Command Architect
 
 Also check out [Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)!
