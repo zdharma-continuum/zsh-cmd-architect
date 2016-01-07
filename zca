@@ -134,7 +134,7 @@ local answer active_window=0
 # $cmd can be empty if not run from Zle
 local buf="${BUFFER%% #}"
 buf="${buf## #}"
-list1=( "$buf" "[Accept] [Abort]" )
+list1=( "$buf" "[Accept] [Reject]" )
 list2=( "$history[@]" )
 
 integer term_height="$LINES"
@@ -242,7 +242,7 @@ while (( 1 )); do
                 print -zr "$list1[1]"
                 break
             fi
-        elif [ "$answer" = "[Abort]" ]; then
+        elif [ "$answer" = "[Reject]" ]; then
             # QUIT (1/2)
             [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
             break
