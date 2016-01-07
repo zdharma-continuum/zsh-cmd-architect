@@ -13,7 +13,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/psprint/zsh-cmd-architect/
 
 To update run the command again.
 
-`ZCA` will be installed at `~/.config/zca/zsh-cmd-architect`, config files will be copied to `~/.config/zca`.
+`ZCA` will be installed at `~/.config/zca/zsh-cmd-architect`, config files will be copied to `~/.config/zca`. `.zshrc`
+will be updated with only `4` lines of code that will be added to the bottom.
 
 After installing and reloading shell give `ZCA` a quick try with `Ctrl-T`.
 
