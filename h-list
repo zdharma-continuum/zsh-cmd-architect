@@ -381,9 +381,9 @@ while (( 1 )); do
             "$disp_list2[@]"
     fi
 
+    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold magenta/black
     zcurses border "$wname_main"
     zcurses move "$wname_main" 0 2
-    [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold magenta/black
     zcurses string "$wname_main" "$header"
     [ "$mark_header" = "1" ] && zcurses attr "$wname_main" $bold white/black
     _hlist_cursor_visibility "main" "0"
