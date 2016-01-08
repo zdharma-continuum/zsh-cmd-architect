@@ -1,4 +1,4 @@
-![zca logo](http://imageshack.com/a/img633/9128/Zrie5k.png)
+![zca logo](http://imageshack.com/a/img911/7375/ZWHW5Y.png)
 
 # Zsh Command Architect
 
