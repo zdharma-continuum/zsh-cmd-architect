@@ -2,7 +2,7 @@
 
 # Zsh Command Architect
 
-Also check out [Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)!
+Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)!
 
 Zsh Command Architect in action:
 ![zca](http://imageshack.com/a/img907/6173/osCBYT.gif)
