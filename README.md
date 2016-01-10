@@ -5,7 +5,7 @@
 Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)!
 
 Zsh Command Architect in action:
-![zca](http://imageshack.com/a/img907/6173/osCBYT.gif)
+![zca](http://imageshack.com/a/img633/1852/t7v3q7.gif)
 
 ## Installation
 
