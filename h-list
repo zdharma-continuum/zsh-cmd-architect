@@ -447,7 +447,7 @@ while (( 1 )); do
         REPLY="$selection"
         reply=( "$list[@]" )
         break
-    elif [[ "$action" = F1 || "$action" = F2 ]]; then
+    elif [[ "$action" = F1 || "$action" = F2 || "$action" = "F3" ]]; then
         REPLY="$action"
         reply=( "$list[@]" )
         break

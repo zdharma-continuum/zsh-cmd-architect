@@ -128,14 +128,15 @@ unset HLIST_COLORING_PATTERN
 [ -f ~/.config/zca/h-list.conf ] && . ~/.config/zca/h-list.conf
 [ -f ~/.config/zca/zca.conf ] && . ~/.config/zca/zca.conf
 
-typeset -a list1 list2
+typeset -a list1 list2 undolist
 local answer active_window=1
 
 # $cmd can be empty if not run from Zle
 local buf="${BUFFER%% #}"
 buf="${buf## #}"
-list1=( "$buf" "[F1-Accept] [F2-Reject]" )
+list1=( "$buf" "[F1-Accept] [F2-Reject] [F3-Undo]" )
 list2=( "$history[@]" )
+undolist=( "$list1[1]" )
 
 integer term_height="$LINES"
 integer term_width="$COLUMNS"
@@ -207,6 +208,9 @@ while (( 1 )); do
                 tmp[HLIST_CURRENT_SEGMENT]="$dest"
                 list1[1]="${(j: :)tmp}"
                 (( HLIST_CURRENT_SEGMENT -- ))
+
+                # Remember for undo
+                undolist=( "$list1[1]" "$undolist[@]" )
             fi
         elif [ "$REPLY" = "MOVE_RIGHT" ]; then
             if [ "$HLIST_CURRENT_SEGMENT" -lt "$nseg" ]; then
@@ -215,19 +219,27 @@ while (( 1 )); do
                 tmp[HLIST_CURRENT_SEGMENT]="$dest"
                 list1[1]="${(j: :)tmp}"
                 (( HLIST_CURRENT_SEGMENT ++ ))
+
+                # Remember for undo
+                undolist=( "$list1[1]" "$undolist[@]" )
             fi
         fi
-    elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = "F1" || "$REPLY" = "F2" ]]; then
+    elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = "F1" || "$REPLY" = "F2" || "$REPLY" = "F3" ]]; then
         if [ "$REPLY" = "F1" ]; then
             # Simulate F1-Accept selection
-            reply=( "" "[F1-Accept] [F2-Reject]" )
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
             REPLY="2"
             HLIST_CURRENT_SEGMENT="1"
         elif [ "$REPLY" = "F2" ]; then
             # Simulate F2-Reject selection
-            reply=( "" "[F1-Accept] [F2-Reject]" )
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
             REPLY="2"
             HLIST_CURRENT_SEGMENT="2"
+        elif [ "$REPLY" = "F3" ]; then
+            # Simulate F3-Reject selection
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
+            REPLY="2"
+            HLIST_CURRENT_SEGMENT="3"
         fi
 
         #
@@ -259,6 +271,12 @@ while (( 1 )); do
             # QUIT (1/2)
             [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
             break
+        elif [ "$answer" = "[F3-Undo]" ]; then
+            if [ "$#undolist" -gt 1 ]; then
+                # Move previous to position of the current, deleting current
+                list1[1]="$undolist[2]"
+                shift undolist
+            fi
         else
             #
             # Here is where add or remove logic operates
@@ -268,9 +286,15 @@ while (( 1 )); do
                 # Delete of segment
                 tmp[cur_seg]=()
                 list1[1]="${(j: :)tmp}"
+
+                # Remember for undo
+                undolist=( "$list1[1]" "$undolist[@]" )
             elif [ "$active_window" = "1" ]; then
                 # Addition of segment
                 [ -z "$list1[1]" ] && list1[1]="$answer" || list1[1]="$list1[1] $answer"
+
+                # Remember for undo
+                undolist=( "$list1[1]" "$undolist[@]" )
             fi
         fi
     elif [[ "$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -lt 0 ]]; then
