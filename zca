@@ -130,6 +130,9 @@ unset HLIST_COLORING_PATTERN
 
 typeset -a list1 list2 undolist
 local answer active_window=1
+local boldattr
+
+[ "$bold" = "0" ] && boldattr="" || boldattr="+bold"
 
 # $cmd can be empty if not run from Zle
 local buf="${BUFFER%% #}"
@@ -147,6 +150,10 @@ if [[ "$term_height" -lt 1 || "$term_width" -lt 1 ]]; then
 fi
 
 _zca_init_windows
+
+zcurses bg "cmd" "$boldattr" white/black
+zcurses bg "main" "$boldattr" white/black
+zcurses bg "status" "$boldattr" white/black
 
 # First draw two vanilla (no remembering of state) h-lists, saving their default state
 HLIST_DRAW_ONLY=1

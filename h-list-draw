@@ -96,8 +96,9 @@ local text_offset="$6"
 local win="$7"
 shift 7
 integer max_text_len=page_width-x_offset
+local boldattr
 
-[ "$bold" = "0" ] && bold="" || bold="+bold"
+[ "$bold" = "0" ] && boldattr="" || boldattr="+bold"
 [[ "$active_text" = "underline" || "$active_text" = "reverse" ]] || local active_text="reverse"
 # With Linux terminal underline won't work properly
 [ "$TERM" = "linux" ] && active_text="reverse"
@@ -107,7 +108,7 @@ integer end_idx=max_idx
 [ "$end_idx" -gt "$#" ] && end_idx="$#"
 integer y=y_offset
 
-zcurses attr "$win" $bold white/black
+zcurses attr "$win" "$boldattr" white/black
 zcurses clear "$win"
 
 integer i text_len
