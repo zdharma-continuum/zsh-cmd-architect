@@ -158,7 +158,7 @@ local mark_header="$8"
 
 shift 8
 
-typeset -a list disp_list
+typeset -a list disp_list disp_list2
 integer last_element=$#
 local action
 local final_key
