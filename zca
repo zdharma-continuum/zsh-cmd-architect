@@ -232,26 +232,20 @@ while (( 1 )); do
             fi
         fi
     elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = F[1-4] ]]; then
-        if [ "$REPLY" = "F1" ]; then
+        if [[ "$REPLY" = F[1-4] ]]; then
+            # Simulate
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
+            local key="$REPLY"
+            REPLY="2"
+
             # Simulate F1-Accept selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
-            REPLY="2"
-            HLIST_CURRENT_SEGMENT="1"
-        elif [ "$REPLY" = "F2" ]; then
+            [ "$key" = "F1" ] && HLIST_CURRENT_SEGMENT="1"
             # Simulate F2-Reject selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
-            REPLY="2"
-            HLIST_CURRENT_SEGMENT="2"
-        elif [ "$REPLY" = "F3" ]; then
+            [ "$key" = "F2" ] && HLIST_CURRENT_SEGMENT="2"
             # Simulate F3-Reject selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
-            REPLY="2"
-            HLIST_CURRENT_SEGMENT="3"
-        elif [ "$REPLY" = "F4" ]; then
+            [ "$key" = "F3" ] && HLIST_CURRENT_SEGMENT="3"
             # Simulate F4-Semicolon selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
-            REPLY="2"
-            HLIST_CURRENT_SEGMENT="4"
+            [ "$key" = "F4" ] && HLIST_CURRENT_SEGMENT="4"
         fi
 
         #
