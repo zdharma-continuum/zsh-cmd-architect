@@ -1,6 +1,6 @@
 # Uses h-list
 
-emulate -L zsh
+emulate -LR zsh
 
 setopt extendedglob
 
