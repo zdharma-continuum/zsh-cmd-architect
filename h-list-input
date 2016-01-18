@@ -146,7 +146,7 @@ case "$key" in
     (SRIGHT|'L')
         reply=( "$HLIST_CURRENT_SEGMENT" MOVE_RIGHT )
         ;;
-    (F1|F2|F3)
+    (F1|F2|F3|F4)
         reply=( -1 "$key" )
         ;;
     ($'\E')
@@ -222,7 +222,7 @@ case "$key" in
         (( HLIST_CURRENT_SEGMENT = HLIST_CURRENT_SEGMENT + 1 ))
         [ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ] && HLIST_CURRENT_SEGMENT="$nseg"
         ;;
-    (F1|F2|F3)
+    (F1|F2|F3|F4)
         reply=( -1 "$key" )
         ;;
     (F4|F5|F6|F7|F8|F9|F10)

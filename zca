@@ -137,7 +137,7 @@ local boldattr
 # $cmd can be empty if not run from Zle
 local buf="${BUFFER%% #}"
 buf="${buf## #}"
-list1=( "$buf" "[F1-Accept] [F2-Reject] [F3-Undo]" )
+list1=( "$buf" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
 list2=( "$history[@]" )
 undolist=( "$list1[1]" )
 
@@ -231,22 +231,27 @@ while (( 1 )); do
                 undolist=( "$list1[1]" "$undolist[@]" )
             fi
         fi
-    elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = "F1" || "$REPLY" = "F2" || "$REPLY" = "F3" ]]; then
+    elif [[ ("$REPLY" = -(#c0,1)[0-9]## && "$REPLY" -gt 0) || "$REPLY" = F[1-4] ]]; then
         if [ "$REPLY" = "F1" ]; then
             # Simulate F1-Accept selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
             REPLY="2"
             HLIST_CURRENT_SEGMENT="1"
         elif [ "$REPLY" = "F2" ]; then
             # Simulate F2-Reject selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
             REPLY="2"
             HLIST_CURRENT_SEGMENT="2"
         elif [ "$REPLY" = "F3" ]; then
             # Simulate F3-Reject selection
-            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo]" )
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
             REPLY="2"
             HLIST_CURRENT_SEGMENT="3"
+        elif [ "$REPLY" = "F4" ]; then
+            # Simulate F4-Semicolon selection
+            reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
+            REPLY="2"
+            HLIST_CURRENT_SEGMENT="4"
         fi
 
         #
@@ -284,6 +289,12 @@ while (( 1 )); do
                 list1[1]="$undolist[2]"
                 shift undolist
             fi
+        elif [ "$answer" = "[F4-Semicolon]" ]; then
+            # Addition of semicolon
+            [ -z "$list1[1]" ] && list1[1]=";" || list1[1]="$list1[1] ;"
+
+            # Remember for undo
+            undolist=( "$list1[1]" "$undolist[@]" )
         else
             #
             # Here is where add or remove logic operates
