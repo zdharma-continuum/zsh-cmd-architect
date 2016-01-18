@@ -42,6 +42,7 @@ a mouse. Advanced history search (multi word, without duplicate lines) allows to
 the parts.
 
 Keys are:
+- `Ctrl-t` - start Zsh Command Architect (default binding)
 - `Enter` - delete selected segment (when in command window) or add selected segment (when in history window)
 - `Shift-left` or `Shift-right` - move active segment (when in command window)
 - `Tab` - switch between the two available windows
