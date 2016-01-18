@@ -267,7 +267,7 @@ while (( 1 )); do
             # ZLE?
             if [ "${(t)CURSOR}" = "integer-local-special" ]; then
                 zle redisplay
-                zle kill-whole-line
+                zle kill-buffer
                 zle -U "$list1[1]"
                 break
             else
