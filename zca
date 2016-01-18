@@ -131,6 +131,7 @@ unset HLIST_COLORING_PATTERN
 typeset -a list1 list2 undolist
 local answer active_window=1
 local boldattr
+integer cur_bkp
 
 [ "$bold" = "0" ] && boldattr="" || boldattr="+bold"
 
@@ -195,6 +196,9 @@ while (( 1 )); do
         h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "1" "${list2[@]}"
     fi
 
+    # Init before possible simulation
+    cur_bkp=-1
+
     if [ "$REPLY" = "LEAVE" ]; then
         (( active_window = 1 - active_window ))
         _zca_switch_lists_states "$active_window"
@@ -237,6 +241,7 @@ while (( 1 )); do
             reply=( "" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
             local key="$REPLY"
             REPLY="2"
+            cur_bkp="$HLIST_CURRENT_SEGMENT"
 
             # Simulate F1-Accept selection
             [ "$key" = "F1" ] && HLIST_CURRENT_SEGMENT="1"
@@ -249,7 +254,7 @@ while (( 1 )); do
         fi
 
         #
-        # Selection - add or remove element (or Accept or Quit)
+        # Selection - add or remove element (or Accept, Reject, Undo, Semicolon)
         #
 
         answer="$reply[REPLY]"
@@ -314,6 +319,9 @@ while (( 1 )); do
         [ "${(t)CURSOR}" = "integer-local-special" ] && zle redisplay
         break
     fi
+
+    # After simulating, restore current segment
+    [ "$cur_bkp" -ne "-1" ] && HLIST_CURRENT_SEGMENT="$cur_bkp"
 
 done
 # vim: set filetype=zsh:
