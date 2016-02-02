@@ -21,9 +21,13 @@ will be updated with only `4` lines of code that will be added to the bottom.
 
 After installing and reloading shell give `ZCA` a quick try with `Ctrl-T`.
 
+## Installation With [Zplugin](https://github.com/psprint/zplugin)
+
+Add `zplugin load psprint/zsh-cmd-architect` to `.zshrc`. The config files will be available in `~/.config/zca`.
+
 ## Installation With Zgen
 
-Just add `zgen load psprint/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a proper `zgen save` construct in `.zshrc`).
+Add `zgen load psprint/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a proper `zgen save` construct in `.zshrc`).
 The config files will be available in `~/.config/zca`.
 
 ## Installation With Antigen
