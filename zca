@@ -125,8 +125,8 @@ _zca_switch_lists_states() {
 
 unset HLIST_COLORING_PATTERN
 
-[ -f ~/.config/zca/h-list.conf ] && . ~/.config/zca/h-list.conf
-[ -f ~/.config/zca/zca.conf ] && . ~/.config/zca/zca.conf
+[ -f ~/.config/zca/h-list.conf ] && builtin source ~/.config/zca/h-list.conf
+[ -f ~/.config/zca/zca.conf ] && builtin source ~/.config/zca/zca.conf
 
 typeset -a list1 list2 undolist
 local answer active_window=1
