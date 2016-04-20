@@ -23,11 +23,18 @@ for i; do
     fi
 done
 
+# Don't leave positional parameters being set
+set --
+
 #
 # Load functions
 #
 
 autoload h-list zca zca-usetty-wrapper zca-widget
-
 zle -N zca-widget
 bindkey '^T' zca-widget
+
+PATH="$PATH:$HOME/test"
+FPATH="$FPATH:$HOME/tmp"
+
+compdef test
