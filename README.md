@@ -34,6 +34,19 @@ The config files will be available in `~/.config/zca`.
 Add `antigen bundle psprint/zsh-cmd-architect` to `.zshrc`. There also
 should be `antigen apply`. The config files will be in `~/.config/znt`.
 
+## Manual Installation
+
+After extracting `ZCA` to `{some-directory}` add following two lines to `~/.zshrc`:
+
+```zsh
+fpath+=( {some-directory} )
+source "{some-directory}/zsh-cmd-architect.plugin.zsh"
+```
+
+As you can see, no plugin manager is needed to use the `*.plugin.zsh`
+file. The above two lines of code are all that almost all plugin
+managers do.
+
 ## Single File Manual Installation
 
 Running script `doc/generate_single_file` will create single-file version of `ZCA`.
