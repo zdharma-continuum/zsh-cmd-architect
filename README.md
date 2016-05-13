@@ -44,8 +44,15 @@ source "{some-directory}/zsh-cmd-architect.plugin.zsh"
 ```
 
 As you can see, no plugin manager is needed to use the `*.plugin.zsh`
-file. The above two lines of code are all that almost all plugin
-managers do.
+file. The above two lines of code are all that almost **all** plugin
+managers do. In fact, what's actually needed is only:
+
+```zsh
+source "{some-directory}/zsh-cmd-architect.plugin.zsh"
+```
+
+because `ZCA` detects if it is used by **any** plugin manager and can
+handle `$fpath` update by itself.
 
 ## Single File Manual Installation
 
