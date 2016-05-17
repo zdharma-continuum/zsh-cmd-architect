@@ -85,3 +85,33 @@ Keys are:
 ## Performance
 
 `ZCA` is fastest with `Zsh` before `5.0.6` and starting from `5.2`
+
+## IRC Channel
+
+Channel `#zplugin@freenode` is a support place for all author's projects. Connect to:
+[chat.freenode.net:6697](ircs://chat.freenode.net:6697/%23zplugin) (SSL) or [chat.freenode.net:6667](irc://chat.freenode.net:6667/%23zplugin)
+ and join #zplugin.
+
+Following is a quick access via Webchat [![IRC](https://kiwiirc.com/buttons/chat.freenode.net/zplugin.png)](https://kiwiirc.com/client/chat.freenode.net:+6697/#zplugin)
+
+# Fixing tmux, screen and linux vt
+
+If `TERM=screen-256color` (often a case for `tmux` and `screen` sessions) then
+`ncv` terminfo capability will have `2`nd bit set.  This in general means that
+underline won't work. To fix this by creating your own `ncv=0`-equipped
+terminfo file, run:
+
+```zsh
+{ infocmp -x screen-256color; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
+```
+
+A file will be created in directory `~/.terminfo` and will be automatically
+used, `tmux` and `screen` will work. Similar is for Linux virtual terminal:
+
+```zsh
+{ infocmp -x linux; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
+```
+
+It will not display underline properly, but will instead highlight by a color,
+which is quite nice. The same will not work for FreeBSD's vt, `ZCA` will detect
+if that vt is used and will revert to highlighting elements via `reverse` mode.
