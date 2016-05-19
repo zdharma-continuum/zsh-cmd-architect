@@ -53,7 +53,7 @@ echo ">>> Done"
 echo ">>> Updating .zshrc"
 if ! grep zsh-cmd-architect ~/.zshrc >/dev/null 2>&1; then
     echo >> ~/.zshrc
-    echo "### ZCE's installer added snippet ###" >> ~/.zshrc
+    echo "### ZCA's installer added snippet ###" >> ~/.zshrc
     echo "fpath=( \"\$fpath[@]\" \"\$HOME/.config/zca/zsh-cmd-architect\" )" >> ~/.zshrc
     echo "autoload h-list zca zca-usetty-wrapper zca-widget" >> ~/.zshrc
     echo "zle -N zca-widget" >> ~/.zshrc
