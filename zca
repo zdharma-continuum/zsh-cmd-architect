@@ -22,6 +22,7 @@ local one_HLIST_SEARCH_BUFFER
 local one_HLIST_TEXT_OFFSET
 local one_HLIST_IS_UNIQ_MODE
 local one_HLIST_CURRENT_SEGMENT
+local -a one_HLIST_ENABLED_EVENTS
 local -A one_HLIST_ACTIVE_SEGMENTS
 local one_HLIST_TRACK_SEGMENTS
 
@@ -32,6 +33,7 @@ local two_HLIST_SEARCH_BUFFER
 local two_HLIST_TEXT_OFFSET
 local two_HLIST_IS_UNIQ_MODE
 local two_HLIST_CURRENT_SEGMENT
+local -a two_HLIST_ENABLED_EVENTS
 local -A two_HLIST_ACTIVE_SEGMENTS
 local two_HLIST_TRACK_SEGMENTS
 
@@ -176,6 +178,7 @@ zcurses bg "status" "$boldattr" white/black
 HLIST_DRAW_ONLY=1
 HLIST_REMEMBER_STATE=0
 
+typeset -a HLIST_ENABLED_EVENTS
 HLIST_START_IN_UNIQ_MODE=1
 local HLIST_TRACK_SEGMENTS=0
 h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0" "${list2[@]}"
@@ -188,7 +191,6 @@ HLIST_TRACK_SEGMENTS=1
 h-list "cmd" "4" $term_width "" "0" "0" "  Command:  " "1" "${list1[@]}"
 # Save default state of list 1
 _zca_switch_lists_states 1
-unset HLIST_ENABLED_EVENTS
 
 HLIST_DRAW_ONLY=0
 HLIST_REMEMBER_STATE=1 # From now on lists remember their state
