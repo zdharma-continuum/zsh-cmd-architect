@@ -457,7 +457,8 @@ while (( 1 )); do
         REPLY="LEAVE"
         reply=( "$list[@]" )
         break
-    elif [[ "$action" = "MOVE_LEFT" || "$action" = "MOVE_RIGHT" ]]; then
+    elif [[ "$action" = "MOVE_LEFT" || "$action" = "MOVE_RIGHT" ||
+            "$action" = "BR_MOVE_LEFT" || "$action" = "BR_MOVE_RIGHT" ]]; then
         REPLY="$action"
         reply=( "$list[@]" )
         break

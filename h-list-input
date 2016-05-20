@@ -100,6 +100,10 @@ case "$key" in
         reply=( -1 REDRAW )
         ;;
     (\])
+        if [[ "${HLIST_ENABLED_EVENTS[(r)BR_MOVE_RIGHT]}" = "BR_MOVE_RIGHT" ]]; then
+            reply=( "$HLIST_CURRENT_SEGMENT" "BR_MOVE_RIGHT" )
+        else
+
         [[ "${(t)HLIST_HOP_INDEXES}" = "array" || "${(t)HLIST_HOP_INDEXES}" = "array-local" ]] &&
         [ -z "$HLIST_SEARCH_BUFFER" ] && [ "$HLIST_IS_UNIQ_MODE" -eq 0 ] &&
         for idx in "${(n)HLIST_HOP_INDEXES[@]}"; do
@@ -109,8 +113,14 @@ case "$key" in
                 break
             fi
         done
+
+        fi
         ;;
     (\[)
+        if [[ "${HLIST_ENABLED_EVENTS[(r)BR_MOVE_LEFT]}" = "BR_MOVE_LEFT" ]]; then
+            reply=( "$HLIST_CURRENT_SEGMENT" "BR_MOVE_LEFT" )
+        else
+
         [[ "${(t)HLIST_HOP_INDEXES}" = "array" || "${(t)HLIST_HOP_INDEXES}" = "array-local" ]] &&
         [ -z "$HLIST_SEARCH_BUFFER" ] && [ "$HLIST_IS_UNIQ_MODE" -eq 0 ] &&
         for idx in "${(nO)HLIST_HOP_INDEXES[@]}"; do
@@ -120,6 +130,8 @@ case "$key" in
                 break
             fi
         done
+
+        fi
         ;;
     ('<'|'{')
         hscroll=hscroll-7

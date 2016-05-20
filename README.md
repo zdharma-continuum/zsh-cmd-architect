@@ -69,6 +69,7 @@ the parts.
 Keys are:
 - `Ctrl-t` - start Zsh Command Architect (default binding)
 - `Enter` - delete selected segment (when in command window) or add selected segment (when in history window)
+- `[` or `]` - move active segment (when in command window)
 - `Shift-left` or `Shift-right` - move active segment (when in command window)
 - `Tab` - switch between the two available windows
 - `/` - start incremental search

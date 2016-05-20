@@ -22,6 +22,7 @@ local one_HLIST_SEARCH_BUFFER
 local one_HLIST_TEXT_OFFSET
 local one_HLIST_IS_UNIQ_MODE
 local one_HLIST_CURRENT_SEGMENT
+local -a one_HLIST_CURRENT_SEGMENT
 
 local two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
 local two_HLIST_CURRENT_IDX
@@ -30,6 +31,7 @@ local two_HLIST_SEARCH_BUFFER
 local two_HLIST_TEXT_OFFSET
 local two_HLIST_IS_UNIQ_MODE
 local two_HLIST_CURRENT_SEGMENT
+local -a two_HLIST_CURRENT_SEGMENT
 
 # Cleanup before any exit
 _zca_exit() {
@@ -93,6 +95,7 @@ _zca_switch_lists_states() {
         two_HLIST_TEXT_OFFSET=$HLIST_TEXT_OFFSET
         two_HLIST_IS_UNIQ_MODE=$HLIST_IS_UNIQ_MODE
         two_HLIST_CURRENT_SEGMENT=$HLIST_CURRENT_SEGMENT
+        two_HLIST_ENABLED_EVENTS=( ${HLIST_ENABLED_EVENTS[@]} )
 
         # ..and restore 1st list's state
         HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$one_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
@@ -102,6 +105,7 @@ _zca_switch_lists_states() {
         HLIST_TEXT_OFFSET=$one_HLIST_TEXT_OFFSET
         HLIST_IS_UNIQ_MODE=$one_HLIST_IS_UNIQ_MODE
         HLIST_CURRENT_SEGMENT=$one_HLIST_CURRENT_SEGMENT
+        HLIST_ENABLED_EVENTS=( ${one_HLIST_ENABLED_EVENTS[@]} )
     else
         # Switched to 2st list, save 1st list's state
         one_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
@@ -111,6 +115,7 @@ _zca_switch_lists_states() {
         one_HLIST_TEXT_OFFSET=$HLIST_TEXT_OFFSET
         one_HLIST_IS_UNIQ_MODE=$HLIST_IS_UNIQ_MODE
         one_HLIST_CURRENT_SEGMENT=$HLIST_CURRENT_SEGMENT
+        one_HLIST_ENABLED_EVENTS=( ${HLIST_ENABLED_EVENTS[@]} )
 
         # ..and restore 2nd list's state
         HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN=$two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
@@ -120,6 +125,7 @@ _zca_switch_lists_states() {
         HLIST_TEXT_OFFSET=$two_HLIST_TEXT_OFFSET
         HLIST_IS_UNIQ_MODE=$two_HLIST_IS_UNIQ_MODE
         HLIST_CURRENT_SEGMENT=$two_HLIST_CURRENT_SEGMENT
+        HLIST_ENABLED_EVENTS=( ${two_HLIST_ENABLED_EVENTS[@]} )
     fi
 }
 
@@ -166,9 +172,11 @@ h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  His
 _zca_switch_lists_states 0
 unset HLIST_START_IN_UNIQ_MODE
 
+HLIST_ENABLED_EVENTS=( "BR_MOVE_LEFT" "BR_MOVE_RIGHT" )
 h-list "cmd" "4" $term_width "" "0" "0" "  Command:  " "1" "${list1[@]}"
 # Save default state of list 1
 _zca_switch_lists_states 1
+unset HLIST_ENABLED_EVENTS
 
 HLIST_DRAW_ONLY=0
 HLIST_REMEMBER_STATE=1 # From now on lists remember their state
@@ -202,7 +210,8 @@ while (( 1 )); do
     if [ "$REPLY" = "LEAVE" ]; then
         (( active_window = 1 - active_window ))
         _zca_switch_lists_states "$active_window"
-    elif [[ ("$REPLY" = "MOVE_LEFT" || $REPLY = "MOVE_RIGHT") && "$active_window" = 0 ]]; then
+    elif [[ ("$REPLY" = "MOVE_LEFT" || "$REPLY" = "MOVE_RIGHT" ||
+             "$REPLY" = "BR_MOVE_LEFT" || "$REPLY" = "BR_MOVE_RIGHT") && "$active_window" = 0 ]]; then
         #
         # Shift + cursor key - move existing element
         #
@@ -212,7 +221,7 @@ while (( 1 )); do
         integer nseg="$#tmp"
         [[ "$HLIST_CURRENT_SEGMENT" -gt "$nseg" ]] && HLIST_CURRENT_SEGMENT="$nseg"
 
-        if [ "$REPLY" = "MOVE_LEFT" ]; then
+        if [[ "$REPLY" = "MOVE_LEFT" || "$REPLY" = "BR_MOVE_LEFT" ]]; then
             if [ "$HLIST_CURRENT_SEGMENT" -gt "1" ]; then
                 local dest="$tmp[HLIST_CURRENT_SEGMENT-1]"
                 tmp[HLIST_CURRENT_SEGMENT-1]="$tmp[HLIST_CURRENT_SEGMENT]";
@@ -223,7 +232,7 @@ while (( 1 )); do
                 # Remember for undo
                 undolist=( "$list1[1]" "$undolist[@]" )
             fi
-        elif [ "$REPLY" = "MOVE_RIGHT" ]; then
+        elif [[ "$REPLY" = "MOVE_RIGHT" || "$REPLY" = "BR_MOVE_RIGHT" ]]; then
             if [ "$HLIST_CURRENT_SEGMENT" -lt "$nseg" ]; then
                 local dest="$tmp[HLIST_CURRENT_SEGMENT+1]"
                 tmp[HLIST_CURRENT_SEGMENT+1]="$tmp[HLIST_CURRENT_SEGMENT]";
