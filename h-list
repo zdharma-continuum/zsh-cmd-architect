@@ -185,6 +185,8 @@ if [[ -z "$HLIST_REMEMBER_STATE" || "$HLIST_REMEMBER_STATE" -eq 0 || "$HLIST_REM
     HLIST_TEXT_OFFSET=0
     HLIST_IS_UNIQ_MODE=0
     HLIST_CURRENT_SEGMENT=1 # This variable is responsible for horizontal indexing
+    typeset -gA HLIST_ACTIVE_SEGMENTS
+    HLIST_ACTIVE_SEGMENTS=()
 
     # Zero - because it isn't known, unless we
     # confirm that first element is selectable
@@ -431,6 +433,7 @@ while (( 1 )); do
         }
     fi
 
+    integer track_cur_idx="$HLIST_CURRENT_IDX"
     h-list-input "$HLIST_CURRENT_IDX" "$HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN" \
                     "$page_height" "$page_width" "$last_element" "$nseg" "$HLIST_TEXT_OFFSET" \
                     "$final_key" "$HLIST_IS_SEARCH_MODE" "$HLIST_SEARCH_BUFFER" \
@@ -444,6 +447,21 @@ while (( 1 )); do
     HLIST_IS_SEARCH_MODE="$reply[6]"
     HLIST_SEARCH_BUFFER="$reply[7]"
     HLIST_IS_UNIQ_MODE="$reply[8]"
+
+    if [ "$HLIST_TRACK_SEGMENTS" = "1" ]; then
+        # Remember segment change (element change and segment
+        # change cannot occur at the same time)
+        HLIST_ACTIVE_SEGMENTS[$track_cur_idx]="$HLIST_CURRENT_SEGMENT"
+
+        if [[ "$track_cur_idx" != "$HLIST_CURRENT_IDX" ]]; then
+            # Restore segment or set to 1
+            if (( ${+HLIST_ACTIVE_SEGMENTS[$HLIST_CURRENT_IDX]} )); then
+                HLIST_CURRENT_SEGMENT="${HLIST_ACTIVE_SEGMENTS[$HLIST_CURRENT_IDX]}"
+            else
+                HLIST_CURRENT_SEGMENT=1
+            fi
+        fi
+    fi
 
     if [ "$action" = "SELECT" ]; then
         REPLY="$selection"
