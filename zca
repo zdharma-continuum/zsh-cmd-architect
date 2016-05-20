@@ -22,7 +22,6 @@ local one_HLIST_SEARCH_BUFFER
 local one_HLIST_TEXT_OFFSET
 local one_HLIST_IS_UNIQ_MODE
 local one_HLIST_CURRENT_SEGMENT
-local -a one_HLIST_CURRENT_SEGMENT
 
 local two_HLIST_FROM_WHAT_IDX_LIST_IS_SHOWN
 local two_HLIST_CURRENT_IDX
@@ -31,7 +30,6 @@ local two_HLIST_SEARCH_BUFFER
 local two_HLIST_TEXT_OFFSET
 local two_HLIST_IS_UNIQ_MODE
 local two_HLIST_CURRENT_SEGMENT
-local -a two_HLIST_CURRENT_SEGMENT
 
 # Cleanup before any exit
 _zca_exit() {
