@@ -116,6 +116,7 @@ _hlist_mark_current_segment_in_current_element() {
 
         # Lets find interesting segment and mark it with bells (\7)
         integer count=0
+        local i
         for i in "${(z)element}"; do
             count=count+1
             if [[ "$count" -eq "$active_segment" ]]; then
