@@ -177,12 +177,11 @@ HLIST_DRAW_ONLY=1
 HLIST_REMEMBER_STATE=0
 
 HLIST_START_IN_UNIQ_MODE=1
-HLIST_TRACK_SEGMENTS=0
+local HLIST_TRACK_SEGMENTS=0
 h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0" "${list2[@]}"
 # Save default state of list 2
 _zca_switch_lists_states 0
 unset HLIST_START_IN_UNIQ_MODE
-unset HLIST_TRACK_SEGMENTS
 
 HLIST_ENABLED_EVENTS=( "BR_MOVE_LEFT" "BR_MOVE_RIGHT" )
 HLIST_TRACK_SEGMENTS=1
@@ -190,7 +189,6 @@ h-list "cmd" "4" $term_width "" "0" "0" "  Command:  " "1" "${list1[@]}"
 # Save default state of list 1
 _zca_switch_lists_states 1
 unset HLIST_ENABLED_EVENTS
-unset HLIST_TRACK_SEGMENTS
 
 HLIST_DRAW_ONLY=0
 HLIST_REMEMBER_STATE=1 # From now on lists remember their state
