@@ -146,7 +146,7 @@ unset HLIST_COLORING_PATTERN
 [ -f ~/.config/zca/h-list.conf ] && builtin source ~/.config/zca/h-list.conf
 [ -f ~/.config/zca/zca.conf ] && builtin source ~/.config/zca/zca.conf
 
-typeset -a list1 list2 undolist
+typeset -a list1 undolist
 local answer active_window=1
 local boldattr
 integer cur_bkp
@@ -157,7 +157,6 @@ integer cur_bkp
 local buf="${BUFFER%% #}"
 buf="${buf## #}"
 list1=( "$buf" "[F1-Accept] [F2-Reject] [F3-Undo] [F4-Semicolon]" )
-list2=( "$history[@]" )
 undolist=( "$list1[1]" )
 
 integer term_height="$LINES"
@@ -181,7 +180,7 @@ HLIST_REMEMBER_STATE=0
 typeset -a HLIST_ENABLED_EVENTS
 HLIST_START_IN_UNIQ_MODE=1
 local HLIST_TRACK_SEGMENTS=0
-h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0" "${list2[@]}"
+h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0"
 # Save default state of list 2
 _zca_switch_lists_states 0
 unset HLIST_START_IN_UNIQ_MODE
@@ -201,7 +200,7 @@ while (( 1 )); do
     if [ "$active_window" = "0" ]; then
         _zca_switch_lists_states "1"
         HLIST_DRAW_ONLY=1
-        h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0" "${list2[@]}"
+        h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "0" "${history[@]}"
         HLIST_DRAW_ONLY=0
         _zca_switch_lists_states "0"
 
@@ -215,7 +214,7 @@ while (( 1 )); do
         _zca_switch_lists_states "1"
 
         HLIST_DISABLE_SEARCH=0
-        h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "1" "${list2[@]}"
+        h-list "main" $(( term_height-7 )) $term_width "status" "3" "$term_width" "  History:  " "1" "${history[@]}"
     fi
 
     # Init before possible simulation
