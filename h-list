@@ -105,6 +105,10 @@ _hlist_colorify_disp_list() {
 }
 
 _hlist_mark_current_segment_in_current_element() {
+        # Check if current element is in HLIST_NONSELECTABLE_ELEMENTS
+        # If yes, don't mark current segment
+        [ "${HLIST_NONSELECTABLE_ELEMENTS[(r)$HLIST_CURRENT_IDX]}" = "$HLIST_CURRENT_IDX" ] && return
+
         # There will be no colorifying for current element
         integer HLIST_CURRENT_PAGE_IDX=$(( (HLIST_CURRENT_IDX-1)%page_height+1 ))
         local element="$list[HLIST_CURRENT_IDX]"
