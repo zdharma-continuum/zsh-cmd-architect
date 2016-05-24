@@ -67,21 +67,21 @@ a mouse. Advanced history search (multi word, without duplicate lines) allows to
 the parts.
 
 Keys are:
-- `Ctrl-t` - start Zsh Command Architect (default binding)
+- `Ctrl-T` - start Zsh Command Architect (Zshell binding)
 - `Enter` - delete selected segment (when in command window) or add selected segment (when in history window)
 - `[` or `]` - move active segment (when in command window)
 - `Shift-left` or `Shift-right` - move active segment (when in command window)
 - `Tab` - switch between the two available windows
+- `g, G` - beginning and end of the list
 - `/` - start incremental search
 - `Esc` - exit incremental search, clearing filter
 - `<`,`>`, `{`,`}` - horizontal scroll
-- `Ctrl-d`, `Ctrl-u` - half page up or down
-- `Ctrl-p`, `Ctrl-n` - previous and next (also done with vim's j,k)
-- `Ctrl-l` - redraw of whole display
-- `g, G` - beginning and end of the list
-- `Ctrl-o`, `o` - enter uniq mode (no duplicate lines)
-- `Ctrl-w` (in incremental search) - delete whole word
-- `Ctrl-k` (in incremental search) - delete whole line
+- `Ctrl-L` - redraw of whole display
+- `Ctrl-O`, `o` - enter uniq mode (no duplicate lines)
+- `Ctrl-W` (in incremental search) - delete whole word
+- `Ctrl-K` (in incremental search) - delete whole line
+- `Ctrl-D`, `Ctrl-U` - half page up or down
+- `Ctrl-P`, `Ctrl-N` - previous and next (also done with vim's j,k)
 
 ## Performance
 
