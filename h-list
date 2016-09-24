@@ -190,7 +190,6 @@ if [[ -z "$HLIST_REMEMBER_STATE" || "$HLIST_REMEMBER_STATE" -eq 0 || "$HLIST_REM
     HLIST_TEXT_OFFSET=0
     HLIST_IS_UNIQ_MODE=0
     HLIST_CURRENT_SEGMENT=1 # This variable is responsible for horizontal indexing
-    typeset -gA HLIST_ACTIVE_SEGMENTS
     HLIST_ACTIVE_SEGMENTS=()
 
     # Zero - because it isn't known, unless we
