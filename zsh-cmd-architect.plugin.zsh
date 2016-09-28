@@ -26,18 +26,18 @@ fi
 #
 
 if [[ ! -d "$HOME/.config" ]]; then
-    mkdir "$HOME/.config"
+    command mkdir "$HOME/.config"
 fi
 
 if [[ ! -d "$CONFIG_DIR" ]]; then
-    mkdir "$CONFIG_DIR"
+    command mkdir "$CONFIG_DIR"
 fi
 
 unset __ZCA_CONFIG_FILE
 typeset -g __ZCA_CONFIG_FILE
 for __ZCA_CONFIG_FILE in "h-list.conf" "zca.conf"; do
     if [[ ! -f "$CONFIG_DIR/$__ZCA_CONFIG_FILE" ]]; then
-        cp "$REPO_DIR/.config/zca/$__ZCA_CONFIG_FILE" "$CONFIG_DIR"
+        command cp "$REPO_DIR/.config/zca/$__ZCA_CONFIG_FILE" "$CONFIG_DIR"
     fi
 done
 unset __ZCA_CONFIG_FILE
