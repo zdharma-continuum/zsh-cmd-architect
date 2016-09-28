@@ -33,16 +33,14 @@ if [[ ! -d "$CONFIG_DIR" ]]; then
     mkdir "$CONFIG_DIR"
 fi
 
-set h-list.conf zca.conf
-
-for i; do
-    if [[ ! -f "$CONFIG_DIR/$i" ]]; then
-        cp "$REPO_DIR/.config/zca/$i" "$CONFIG_DIR"
+unset __ZCA_CONFIG_FILE
+typeset -g __ZCA_CONFIG_FILE
+for __ZCA_CONFIG_FILE in "h-list.conf" "zca.conf"; do
+    if [[ ! -f "$CONFIG_DIR/$__ZCA_CONFIG_FILE" ]]; then
+        cp "$REPO_DIR/.config/zca/$__ZCA_CONFIG_FILE" "$CONFIG_DIR"
     fi
 done
-
-# Don't leave positional parameters being set
-set --
+unset __ZCA_CONFIG_FILE
 
 #
 # Load functions
