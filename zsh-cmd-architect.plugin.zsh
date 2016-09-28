@@ -25,18 +25,18 @@ fi
 # Copy configs
 #
 
-if ! test -d "$HOME/.config"; then
+if [[ ! -d "$HOME/.config" ]]; then
     mkdir "$HOME/.config"
 fi
 
-if ! test -d "$CONFIG_DIR"; then
+if [[ ! -d "$CONFIG_DIR" ]]; then
     mkdir "$CONFIG_DIR"
 fi
 
 set h-list.conf zca.conf
 
 for i; do
-    if ! test -f "$CONFIG_DIR/$i"; then
+    if [[ ! -f "$CONFIG_DIR/$i" ]]; then
         cp "$REPO_DIR/.config/zca/$i" "$CONFIG_DIR"
     fi
 done
