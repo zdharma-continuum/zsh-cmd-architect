@@ -1,5 +1,7 @@
 ![zca logo](http://imageshack.com/a/img911/7375/ZWHW5Y.png)
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=D6XDCHDSBDSDG)
+
 # Zsh Command Architect
 
 Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)
