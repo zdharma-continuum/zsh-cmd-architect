@@ -1,4 +1,5 @@
 ![zca logo](http://imageshack.com/a/img911/7375/ZWHW5Y.png)
+
 [![Gitter](https://badges.gitter.im/zdharma-continuum/community.svg)](https://gitter.im/zdharma-continuum/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Zsh Command Architect
