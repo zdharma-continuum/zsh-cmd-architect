@@ -1,11 +1,10 @@
 ![zca logo](http://imageshack.com/a/img911/7375/ZWHW5Y.png)
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=D6XDCHDSBDSDG)
+[![Gitter](https://badges.gitter.im/zdharma-continuum/community.svg)](https://gitter.im/zdharma-continuum/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Zsh Command Architect
 
-Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/psprint/zsh-navigation-tools)
-and [![ZEW](http://imageshack.com/a/img908/3869/Vsd2c6.png) Zsh Editing Workbench](https://github.com/psprint/zsh-editing-workbench)
+Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/zdharma-continuum/zsh-navigation-tools)
+and [![ZEW](http://imageshack.com/a/img908/3869/Vsd2c6.png) Zsh Editing Workbench](https://github.com/zdharma-continuum/zsh-editing-workbench)
 
 Zsh Command Architect in action:
 ![zca](http://imageshack.com/a/img905/3617/grLOeP.gif)
@@ -13,7 +12,7 @@ Zsh Command Architect in action:
 ## Installation
 
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/psprint/zsh-cmd-architect/master/doc/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zsh-cmd-architect/master/doc/install.sh)"
 ```
 
 To update run the command again.
@@ -23,17 +22,17 @@ will be updated with only `4` lines of code that will be added to the bottom.
 
 After installing and reloading shell give `ZCA` a quick try with `Ctrl-T`.
 
-## Installation With [Zplugin](https://github.com/psprint/zplugin)
+## Installation With [Zplugin](https://github.com/zdharma-continuum/zplugin)
 
-Add `zplugin load psprint/zsh-cmd-architect` to `.zshrc`. The config files will be available in `~/.config/zca`.
+Add `zplugin load zdharma-continuum/zsh-cmd-architect` to `.zshrc`. The config files will be available in `~/.config/zca`.
 
 ## Installation With Zgen
 
-Add `zgen load psprint/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a proper `zgen save` construct in `.zshrc`).
+Add `zgen load zdharma-continuum/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a proper `zgen save` construct in `.zshrc`).
 The config files will be available in `~/.config/zca`.
 
 ## Installation With Antigen
-Add `antigen bundle psprint/zsh-cmd-architect` to `.zshrc`. There also
+Add `antigen bundle zdharma-continuum/zsh-cmd-architect` to `.zshrc`. There also
 should be `antigen apply`. The config files will be in `~/.config/znt`.
 
 ## Manual Installation
@@ -88,14 +87,6 @@ Keys are:
 ## Performance
 
 `ZCA` is fastest with `Zsh` before `5.0.6` and starting from `5.2`
-
-## IRC Channel
-
-Channel `#zplugin@freenode` is a support place for all author's projects. Connect to:
-[chat.freenode.net:6697](ircs://chat.freenode.net:6697/%23zplugin) (SSL) or [chat.freenode.net:6667](irc://chat.freenode.net:6667/%23zplugin)
- and join #zplugin.
-
-Following is a quick access via Webchat [![IRC](https://kiwiirc.com/buttons/chat.freenode.net/zplugin.png)](https://kiwiirc.com/client/chat.freenode.net:+6697/#zplugin)
 
 # Fixing tmux, screen and linux vt
 
