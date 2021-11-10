@@ -23,7 +23,7 @@ will be updated with only `4` lines of code that will be added to the bottom.
 
 After installing and reloading shell give `ZCA` a quick try with `Ctrl-T`.
 
-## Installation With [Zplugin](https://github.com/zdharma-continuum/zplugin)
+## Installation With [Zplugin](https://github.com/zdharma-continuum/zinit)
 
 Add `zplugin load zdharma-continuum/zsh-cmd-architect` to `.zshrc`. The config files will be available in `~/.config/zca`.
 
