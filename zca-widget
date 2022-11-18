@@ -2,3 +2,4 @@ autoload zca-usetty-wrapper zca
 
 zca-usetty-wrapper zca "$@"
 
+zle reset-prompt
