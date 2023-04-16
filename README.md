@@ -4,11 +4,12 @@
 
 # Zsh Command Architect
 
-Also check out [![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/zdharma-continuum/zsh-navigation-tools)
-and [![ZEW](http://imageshack.com/a/img908/3869/Vsd2c6.png) Zsh Editing Workbench](https://github.com/zdharma-continuum/zsh-editing-workbench)
+Also check out
+[![ZNT](http://imageshack.com/a/img910/3618/oDHnuR.png) Zsh Navigation Tools](https://github.com/zdharma-continuum/zsh-navigation-tools)
+and
+[![ZEW](http://imageshack.com/a/img908/3869/Vsd2c6.png) Zsh Editing Workbench](https://github.com/zdharma-continuum/zsh-editing-workbench)
 
-Zsh Command Architect in action:
-![zca](http://imageshack.com/a/img905/3617/grLOeP.gif)
+Zsh Command Architect in action: ![zca](http://imageshack.com/a/img905/3617/grLOeP.gif)
 
 ## Installation
 
@@ -29,12 +30,13 @@ Add `zinit load zdharma-continuum/zsh-cmd-architect` to `.zshrc`. The config fil
 
 ## Installation With Zgen
 
-Add `zgen load zdharma-continuum/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a proper `zgen save` construct in `.zshrc`).
-The config files will be available in `~/.config/zca`.
+Add `zgen load zdharma-continuum/zsh-cmd-architect` to `.zshrc` and issue a `zgen reset` (this assumes that there is a
+proper `zgen save` construct in `.zshrc`). The config files will be available in `~/.config/zca`.
 
 ## Installation With Antigen
-Add `antigen bundle zdharma-continuum/zsh-cmd-architect` to `.zshrc`. There also
-should be `antigen apply`. The config files will be in `~/.config/znt`.
+
+Add `antigen bundle zdharma-continuum/zsh-cmd-architect` to `.zshrc`. There also should be `antigen apply`. The config
+files will be in `~/.config/znt`.
 
 ## Manual Installation
 
@@ -45,30 +47,28 @@ fpath+=( {some-directory} )
 source "{some-directory}/zsh-cmd-architect.plugin.zsh"
 ```
 
-As you can see, no plugin manager is needed to use the `*.plugin.zsh`
-file. The above two lines of code are all that almost **all** plugin
-managers do. In fact, what's actually needed is only:
+As you can see, no plugin manager is needed to use the `*.plugin.zsh` file. The above two lines of code are all that
+almost **all** plugin managers do. In fact, what's actually needed is only:
 
 ```zsh
 source "{some-directory}/zsh-cmd-architect.plugin.zsh"
 ```
 
-because `ZCA` detects if it is used by **any** plugin manager and can
-handle `$fpath` update by itself.
+because `ZCA` detects if it is used by **any** plugin manager and can handle `$fpath` update by itself.
 
 ## Single File Manual Installation
 
-Running script `doc/generate_single_file` will create single-file version of `ZCA`.
-It can be sourced from `.zshrc`. Don't forget about configuration files (copy them to `~/.config/zca`).
+Running script `doc/generate_single_file` will create single-file version of `ZCA`. It can be sourced from `.zshrc`.
+Don't forget about configuration files (copy them to `~/.config/zca`).
 
 ## Introduction
 
-`ZCA` allows to copy segments of commands in history, rearrange segments of current command,
-delete segments of current command. This way user glues command from parts without using
-a mouse. Advanced history search (multi word, without duplicate lines) allows to quickly find
-the parts.
+`ZCA` allows to copy segments of commands in history, rearrange segments of current command, delete segments of current
+command. This way user glues command from parts without using a mouse. Advanced history search (multi word, without
+duplicate lines) allows to quickly find the parts.
 
 Keys are:
+
 - `Ctrl-T` - start Zsh Command Architect (Zshell binding)
 - `Enter` - delete selected segment (when in command window) or add selected segment (when in history window)
 - `[` or `]` - move active segment (when in command window)
@@ -91,22 +91,20 @@ Keys are:
 
 # Fixing tmux, screen and linux vt
 
-If `TERM=screen-256color` (often a case for `tmux` and `screen` sessions) then
-`ncv` terminfo capability will have `2`nd bit set.  This in general means that
-underline won't work. To fix this by creating your own `ncv=0`-equipped
-terminfo file, run:
+If `TERM=screen-256color` (often a case for `tmux` and `screen` sessions) then `ncv` terminfo capability will have `2`nd
+bit set. This in general means that underline won't work. To fix this by creating your own `ncv=0`-equipped terminfo
+file, run:
 
 ```zsh
 { infocmp -x screen-256color; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
 ```
 
-A file will be created in directory `~/.terminfo` and will be automatically
-used, `tmux` and `screen` will work. Similar is for Linux virtual terminal:
+A file will be created in directory `~/.terminfo` and will be automatically used, `tmux` and `screen` will work. Similar
+is for Linux virtual terminal:
 
 ```zsh
 { infocmp -x linux; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
 ```
 
-It will not display underline properly, but will instead highlight by a color,
-which is quite nice. The same will not work for FreeBSD's vt, `ZCA` will detect
-if that vt is used and will revert to highlighting elements via `reverse` mode.
+It will not display underline properly, but will instead highlight by a color, which is quite nice. The same will not
+work for FreeBSD's vt, `ZCA` will detect if that vt is used and will revert to highlighting elements via `reverse` mode.
